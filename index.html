@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #ff4b6e;
+            --secondary: #ff758c;
+            --bg-gradient: linear-gradient(135deg, #f8bbd0, #fce4ec, #fff1f2);
+            --text-color: #4a4a4a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            min-height: 90vh;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 25px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .screen {
+            display: none;
+            padding: 25px;
+            flex: 1;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart-icon {
+            font-size: 60px;
+            color: var(--primary);
+            animation: pulse 1.5s infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-family: 'Sacramento', cursive;
+            font-size: 42px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .nickname-badge {
+            background: #ffebee;
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ffb6c1;
+            border-radius: 30px;
+            outline: none;
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 15px;
+            background: #fff;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 75, 110, 0.4);
+            width: 100%;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .step-indicator {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            background: #ffebee;
+            padding: 4px 12px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        .cake-container {
+            font-size: 80px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .cake-container:hover {
+            transform: scale(1.08);
+        }
+
+        .jar-box {
+            background: #fff;
+            border: 2px dashed #ffb6c1;
+            border-radius: 20px;
+            padding: 20px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            font-size: 15px;
+            color: #444;
+        }
+
+        .memory-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            text-align: left;
+            border-left: 4px solid var(--primary);
+            width: 100%;
+        }
+
+        .memory-card h3 {
+            font-size: 15px;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .envelope {
+            background: #ff8a80;
+            width: 100%;
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(255, 138, 128, 0.4);
+            margin: 15px 0;
+            font-weight: 600;
+        }
+
+        .letter-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            color: #333;
+            text-align: left;
+            display: none;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            font-size: 14px;
+            line-height: 1.7;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .error-msg {
+            color: #d32f2f;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .music-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ffebee;
+            color: var(--primary);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 200;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <button class="music-btn" onclick="toggleAudio()">🎵 Song: Tum Se Hi</button>
+    
+    <!-- Updated working direct audio link for "Tum Se Hi" style instrumental/romantic melody -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://cdnsongs.com/music/data/Hindi/2007/Jab_We_Met/128/Tum_Se_Hi.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- STEP 1: LOCK SCREEN -->
+    <div id="step1" class="screen active">
+        <div class="heart-icon">❤️</div>
+        <h1>Hey Heroine! ✨</h1>
+        <div class="nickname-badge">For: Golu Molu / Himi / Hemi / Chottu Don</div>
+        <p>Yeh special surprise sirf tumhare liye hai. Unlock karne ke liye secret code daalo:</p>
+        <input type="password" id="passcodeInput" class="input-box" placeholder="Enter Secret Code...">
+        <button class="btn" onclick="checkPasscode()">Unlock Surprise 🎁</button>
+        <div id="errorMsg" class="error-msg">Galat code! Hint: Code "2610" hai 😉</div>
+    </div>
+
+    <!-- STEP 2: CAKE CUTTING -->
+    <div id="step2" class="screen">
+        <div class="step-indicator">Step 1 of 4</div>
+        <h1>Happy Birthday Himi! 🎉</h1>
+        <p>Cake par tap karke cut karo!</p>
+        <div class="cake-container" onclick="cutCake()">🎂</div>
+        <p id="cakeWishText" style="font-weight: 600; color: var(--primary); margin-top: 5px;"></p>
+        <button id="nextToJarBtn" class="btn" style="display: none;" onclick="goToStep('step3')">Next Surprise ➔</button>
+    </div>
+
+    <!-- STEP 3: LOVE JAR -->
+    <div id="step3" class="screen">
+        <div class="step-indicator">Step 2 of 4</div>
+        <h1>Reasons Why I Love You 🫙</h1>
+        <div class="jar-box" id="reasonBox">
+            Tap button to get a cute reason! 👇
+        </div>
+        <button class="btn" onclick="getRandomReason()">Get a Reason 💖</button>
+        <button class="btn" style="background: #4a4a4a; margin-top: 15px;" onclick="goToStep('step4')">Next: Cute Jokes & Memories ➔</button>
+    </div>
+
+    <!-- STEP 4: MEMORIES & JOKES -->
+    <div id="step4" class="screen" style="justify-content: flex-start; padding-top: 25px;">
+        <div class="step-indicator">Step 3 of 4</div>
+        <h1>Cute Moments & Jokes 😂</h1>
+        
+        <div class="memory-card" style="background: #fff8e1; border-left: 4px solid #ffa000;">
+            <h3>👑 Chottu Don Rule #1</h3>
+            <p><b>Height vs Attitude Rule:</b> Insaan height se chahe chota ho sakta hai, par attitude aur roab poora Don jaisa hona chahiye! (Dedicated to my Chottu Don 😎🔥)</p>
+        </div>
+
+        <div class="memory-card">
+            <h3>👑 My Chottu Don & Heroine</h3>
+            <p>Tumhare jaisa koi nahi hai, tum meri life ki sabse pyaari aur special part ho.</p>
+        </div>
+
+        <div class="memory-card">
+            <h3>🌍 Long Distance Love</h3>
+            <p>Distance chahe kitni bhi ho, mera pyaar tumhare liye har din badhta rehta hai.</p>
+        </div>
+
+        <button class="btn" onclick="goToStep('step5')">Read Love Letter 💌 ➔</button>
+    </div>
+
+    <!-- STEP 5: LOVE LETTER -->
+    <div id="step5" class="screen" style="justify-content: flex-start; padding-top: 25px;">
+        <div class="step-indicator">Step 4 of 4</div>
+        <h1>A Special Letter For Hemi ❤️</h1>
+        <div class="envelope" onclick="openLetter()">
+            💌 Open Envelope
+        </div>
+        <div id="loveLetter" class="letter-content">
+            <b>Meri Pyaari Himi, ❤️</b><br><br>
+            Happy Birthday! Main sach mein chahta tha ki aaj main tere paas hota, tujhe saamne se hug kar pata aur ye din tere sath celebrate kar pata, par chahe hum kitni bhi door hon, mera dil hamesha tere hi paas rehta hai.<br><br>
+            Tu meri zindagi ki sabse khoobsurat blessing hai, meri <b>Heroine</b>. Sach kahoon toh tere bina mera ek din bhi acche se nahi guzarta. Tu jab hasti hai na, toh meri saari tension gayab ho jati hai, meri pyari <b>Golu Molu</b>.<br><br>
+            Chahe kuch bhi ho jaye, bas ek hi baat bolna chahta hoon—<b>mujhe kabhi mat chhod kar jana</b>, kyunki tere bina meri life kuch bhi nahi hai. Tu mera <b>Chottu Don</b> hai jo mujh par roab bhi dikhata hai aur sabse zyada care bhi karta hai.<br><br>
+            Humari ye long distance wali dooriyan sirf ek phase hain, bohot jald hum hamesha ke liye sath honge, meri <b>Hemi</b>. Hamesha aise hi muskuraati raho, tumhari har khushi ke liye main hamesha khada hoon.<br><br>
+            <b>I love you so much, infinite wala! 💕</b><br><br>
+            <b>Forever Yours,</b><br>Tumhara Pyar ❤️
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const secretPasscode = "2610";
+    let isAudioPlaying = false;
+
+    function checkPasscode() {
+        const val = document.getElementById('passcodeInput').value.trim();
+        if(val === secretPasscode) {
+            goToStep('step2');
+            triggerConfetti();
+            playAudio();
+        } else {
+            document.getElementById('errorMsg').style.display = 'block';
+        }
+    }
+
+    function playAudio() {
+        const audio = document.getElementById('bgMusic');
+        audio.play().then(() => {
+            isAudioPlaying = true;
+        }).catch(err => {
+            console.log("Audio play blocked");
+        });
+    }
+
+    function toggleAudio() {
+        const audio = document.getElementById('bgMusic');
+        if (isAudioPlaying) {
+            audio.pause();
+            isAudioPlaying = false;
+        } else {
+            audio.play();
+            isAudioPlaying = true;
+        }
+    }
+
+    function goToStep(stepId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(stepId).classList.add('active');
+    }
+
+    function triggerConfetti() {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }
+
+    function cutCake() {
+        triggerConfetti();
+        document.getElementById('cakeWishText').innerText = "🎂 Happy Birthday Meri Heroine! May all your wishes come true! ✨💖";
+        document.getElementById('nextToJarBtn').style.display = 'block';
+    }
+
+    const reasons = [
+        "Tumhari pyari si smile mera poora din bana deti hai. 😊",
+        "Tum jab gussa hoti ho tab bhi bohot pyari lagti ho, mera Chottu Don! 🙈",
+        "Hum chahe kitni bhi door hon, tum hamesha mere dil ke sabse paas ho. 🌍",
+        "Golu Molu se baat karke sab tension gayab ho jati hai! ✨",
+        "Tum meri life ki sabse khoobsurat blessing ho, Hemi. 💕"
+    ];
+
+    function getRandomReason() {
+        const randomIndex = Math.floor(Math.random() * reasons.length);
+        document.getElementById('reasonBox').innerText = reasons[randomIndex];
+    }
+
+    function openLetter() {
+        const letter = document.getElementById('loveLetter');
+        if(letter.style.display === 'block') {
+            letter.style.display = 'none';
+        } else {
+            letter.style.display = 'block';
+            triggerConfetti();
+        }
+    }
+</script>
+
+</body>
+</html>
